@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusFind - Lost and Found</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f8f9fb;
+    color: #222;
+}
+
+header {
+    background: white;
+    padding: 15px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px #0001;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.logo-icon {
+    background: #4f46e5;
+    color: white;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+}
+
+.report-btn {
+    background: #4f46e5;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.hero {
+    min-height: 390px;
+    background:
+        linear-gradient(#0007, #0007),
+        url("https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1600&q=80")
+        center/cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: 30px 20px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    max-width: 550px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.search-box {
+    display: flex;
+    width: min(600px, 100%);
+    gap: 10px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+}
+
+.search-box button {
+    border: none;
+    border-radius: 30px;
+    padding: 0 25px;
+    background: #222;
+    color: white;
+    cursor: pointer;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.hero-buttons button {
+    padding: 10px 20px;
+    border: 1px solid #ffffff80;
+    background: #2229;
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.stats {
+    background: white;
+    display: flex;
+    justify-content: center;
+    gap: 15%;
+    padding: 25px 10px;
+    text-align: center;
+}
+
+.stat h2 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.stat p {
+    color: #777;
+    font-size: 12px;
+}
+
+.items-section {
+    padding: 40px 5%;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.section-heading a {
+    color: #555;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.item-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px #00008;
+}
+
+.item-image {
+    height: 180px;
+    background: #f0f1f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 45px;
+    position: relative;
+}
+
+.status {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.lost {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.found {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.item-info {
+    padding: 15px;
+}
+
+.item-info h3 {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.item-info p {
+    color: #777;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.category {
+    display: inline-block;
+    background: #f1f1f5;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 11px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #777;
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    nav {
+        gap: 10px;
+    }
+
+    nav a {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .items-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .item-image {
+        height: 140px;
+    }
+
+    .stats {
+        gap: 10%;
+    }
+}
+
+@media (max-width: 420px) {
+    .items-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .search-box button {
+        padding: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <span class="logo-icon">C</span>
+        CampusFind
+    </div>
+
+    <nav>
+        <a href="#">Home</a>
+        <a href="#items">Browse</a>
+        <a href="#stats">Dashboard</a>
+        <button class="report-btn" onclick="reportItem()">+ Report</button>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Lost something?</h1>
+    <h1>We'll help you find it.</h1>
+
+    <p>
+        Report lost or found items and reconnect your campus
+        community with their belongings.
+    </p>
+
+    <div class="search-box">
+        <input type="text" id="searchInput"
+               placeholder="Search for items...">
+        <button onclick="searchItems()">Search</button>
+    </div>
+
+    <div class="hero-buttons">
+        <button onclick="reportItem('Lost')">I Lost Something</button>
+        <button onclick="reportItem('Found')">I Found Something</button>
+    </div>
+</section>
+
+<section class="stats" id="stats">
+    <div class="stat">
+        <h2 id="totalCount">4</h2>
+        <p>TOTAL ITEMS</p>
+    </div>
+    <div class="stat">
+        <h2 id="lostCount">3</h2>
+        <p>LOST</p>
+    </div>
+    <div class="stat">
+        <h2 id="foundCount">1</h2>
+        <p>FOUND</p>
+    </div>
+</section>
+
+<section class="items-section" id="items">
+    <div class="section-heading">
+        <h2>Recent Items</h2>
+        <a href="#items">View All →</a>
+    </div>
+
+    <div class="items-grid" id="itemsGrid">
+
+        <div class="item-card" data-name="lappy" data-status="Lost">
+            <div class="item-image">
+                <span class="status lost">Lost</span>
+                📦
+            </div>
+            <div class="item-info">
+                <h3>lappy</h3>
+                <p>📍 Student Center · 📅 Mar 13, 2026</p>
+                <span class="category">Electronics</span>
+            </div>
+        </div>
+
+        <div class="item-card" data-name="book" data-status="Lost">
+            <div class="item-image">
+                <span class="status lost">Lost</span>
+                📦
+            </div>
+            <div class="item-info">
+                <h3>book</h3>
+                <p>📍 Main Library · 📅 Mar 13, 2026</p>
+                <span class="category">Books</span>
+            </div>
+        </div>
+
+        <div class="item-card" data-name="headphones" data-status="Found">
+            <div class="item-image">
+                <span class="status found">Found</span>
+                📦
+            </div>
+            <div class="item-info">
+                <h3>headphones</h3>
+                <p>📍 Student Center · 📅 Mar 11, 2026</p>
+                <span class="category">Electronics</span>
+            </div>
+        </div>
+
+        <div class="item-card" data-name="air pod" data-status="Lost">
+            <div class="item-image">
+                <span class="status lost">Lost</span>
+                📦
+            </div>
+            <div class="item-info">
+                <h3>Air pod</h3>
+                <p>📍 Parking Lot · 📅 Mar 9, 2026</p>
+                <span class="category">Other</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    © 2026 CampusFind | Lost and Found Management System
+</footer>
+
+<script>
+function searchItems() {
+    const query = document.getElementById("searchInput")
+        .value.toLowerCase().trim();
+
+    const cards = document.querySelectorAll(".item-card");
+
+    cards.forEach(card => {
+        const name = card.dataset.name.toLowerCase();
+        const status = card.dataset.status.toLowerCase();
+
+        card.style.display =
+            name.includes(query) || status.includes(query)
+                ? "block"
+                : "none";
+    });
+}
+
+function reportItem(type = "") {
+    const itemType = type || prompt(
+        "Enter Lost or Found:"
+    );
+
+    if (!itemType) return;
+
+    const itemName = prompt("Enter item name:");
+    if (!itemName) return;
+
+    const location = prompt("Enter location:");
+    const category = prompt("Enter category:");
+
+    const status = itemType.toLowerCase() === "found"
+        ? "Found"
+        : "Lost";
+
+    const card = document.createElement("div");
+    card.className = "item-card";
+    card.dataset.name = itemName.toLowerCase();
+    card.dataset.status = status;
+
+    card.innerHTML = `
+        <div class="item-image">
+            <span class="status ${status.toLowerCase()}">
+                ${status}
+            </span>
+            📦
+        </div>
+        <div class="item-info">
+            <h3>${itemName}</h3>
+            <p>📍 ${location || "Unknown location"}</p>
+            <span class="category">
+                ${category || "Other"}
+            </span>
+        </div>
+    `;
+
+    document.getElementById("itemsGrid").prepend(card);
+    updateStats();
+}
+
+function updateStats() {
+    const cards = document.querySelectorAll(".item-card");
+    let lost = 0;
+    let found = 0;
+
+    cards.forEach(card => {
+        if (card.dataset.status === "Lost") lost++;
+        if (card.dataset.status === "Found") found++;
+    });
+
+    document.getElementById("totalCount").textContent =
+        cards.length;
+    document.getElementById("lostCount").textContent = lost;
+    document.getElementById("foundCount").textContent = found;
+}
+</script>
+
+</body>
+</html>
