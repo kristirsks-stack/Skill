@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusFind - Report an Item</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f8f9fb;
+    color: #222;
+}
+
+/* Navigation */
+header {
+    height: 55px;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    box-shadow: 0 2px 6px #0001;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.logo span {
+    background: #4f46e5;
+    color: white;
+    padding: 7px;
+    border-radius: 7px;
+    margin-right: 5px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+nav a {
+    color: #666;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.report-btn {
+    background: #4f46e5;
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+/* Form container */
+main {
+    display: flex;
+    justify-content: center;
+    padding: 35px 15px;
+}
+
+.form-card {
+    background: white;
+    width: 100%;
+    max-width: 600px;
+    padding: 25px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px #00000008;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 22px;
+}
+
+/* Lost / Found toggle */
+.toggle {
+    display: flex;
+    background: #f3f4f6;
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 22px;
+}
+
+.toggle button {
+    flex: 1;
+    padding: 12px 5px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.toggle button.active {
+    background: white;
+    box-shadow: 0 1px 5px #0001;
+    font-weight: bold;
+}
+
+/* Form fields */
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    background: white;
+    outline: none;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #4f46e5;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* Image upload */
+.photo-upload {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.upload-box {
+    width: 75px;
+    height: 75px;
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #777;
+    font-size: 12px;
+}
+
+.upload-box span {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.preview {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Submit button */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #2563eb, #5b3de5);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.submit-btn:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 500px) {
+    header {
+        padding: 0 15px;
+    }
+
+    nav {
+        gap: 10px;
+    }
+
+    nav a:not(.report-btn) {
+        display: none;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+
+    .row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo"><span> C </span> CampusFind</div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#items">Browse</a>
+        <a href="index.html#stats">Dashboard</a>
+        <a href="report.html" class="report-btn">+ Report</a>
+    </nav>
+</header>
+
+<main>
+    <div class="form-card">
+        <h1>Report an Item</h1>
+        <p class="subtitle">
+            Help your campus community by reporting a lost or found item.
+        </p>
+
+        <form id="reportForm">
+
+            <div class="toggle">
+                <button type="button" id="lostBtn" class="active"
+                    onclick="setType('Lost')">
+                    🔍 I Lost Something
+                </button>
+
+                <button type="button" id="foundBtn"
+                    onclick="setType('Found')">
+                    📦 I Found Something
+                </button>
+            </div>
+
+            <input type="hidden" id="itemType" value="Lost">
+
+            <div class="form-group">
+                <label for="title">Title *</label>
+                <input type="text" id="title"
+                    placeholder="e.g. Blue AirPods Pro Case" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description"
+                    placeholder="Describe the item in detail..."></textarea>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="category">Category *</label>
+                    <select id="category" required>
+                        <option value="">Select category</option>
+                        <option>Electronics</option>
+                        <option>Books</option>
+                        <option>Accessories</option>
+                        <option>Clothing</option>
+                        <option>Documents</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location *</label>
+                    <select id="location" required>
+                        <option value="">Where?</option>
+                        <option>Library</option>
+                        <option>Classroom</option>
+                        <option>Cafeteria</option>
+                        <option>Student Center</option>
+                        <option>Parking Lot</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Date *</label>
+                <input type="date" id="date" required>
+            </div>
+
+            <div class="form-group">
+                <label>Photos (max 5)</label>
+
+                <div class="photo-upload" id="photoUpload">
+                    <label class="upload-box" for="photos">
+                        <span>▧</span>
+                        Add
+                    </label>
+
+                    <input type="file" id="photos"
+                        accept="image/*" multiple
+                        style="display:none">
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Post Lost Item
+            </button>
+
+        </form>
+    </div>
+</main>
+
+<script>
+let currentType = "Lost";
+
+function setType(type) {
+    currentType = type;
+
+    document.getElementById("itemType").value = type;
+    document.getElementById("lostBtn").classList.toggle(
+        "active", type === "Lost"
+    );
+    document.getElementById("foundBtn").classList.toggle(
+        "active", type === "Found"
+    );
+
+    document.getElementById("submitBtn").textContent =
+        "Post " + type + " Item";
+}
+
+const photoInput = document.getElementById("photos");
+const photoUpload = document.getElementById("photoUpload");
+
+photoInput.addEventListener("change", function() {
+    const files = Array.from(this.files);
+
+    if (files.length > 5) {
+        alert("You can upload a maximum of 5 photos.");
+        this.value = "";
+        return;
+    }
+
+    photoUpload.querySelectorAll(".preview").forEach(
+        image => image.remove()
+    );
+
+    files.forEach(file => {
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            const img = document.createElement("img");
+            img.src = event.target.result;
+            img.className = "preview";
+            img.alt = "Uploaded item photo";
+            photoUpload.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+    });
+});
+
+document.getElementById("reportForm").addEventListener(
+    "submit", function(event) {
+        event.preventDefault();
+
+        const item = {
+            type: currentType,
+            title: document.getElementById("title").value,
+            description: document.getElementById("description").value,
+            category: document.getElementById("category").value,
+            location: document.getElementById("location").value,
+            date: document.getElementById("date").value
+        };
+
+        alert(
+            currentType + " item reported successfully!\n\n" +
+            "Title: " + item.title + "\n" +
+            "Category: " + item.category + "\n" +
+            "Location: " + item.location
+        );
+
+        this.reset();
+        setType("Lost");
+
+        photoUpload.querySelectorAll(".preview").forEach(
+            image => image.remove()
+        );
+    }
+);
+</script>
+
+</body>
+</html>
